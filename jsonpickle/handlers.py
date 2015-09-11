@@ -170,6 +170,11 @@ class DatetimeHandler(BaseHandler):
         cls = restore(cls, reset=False)
         value = util.b64decode(args[0])
         params = (value,) + tuple([restore(i, reset=False) for i in args[1:]])
+        try:
+            if params[-1].instance is None:
+                params = params[:-1]
+        except (IndexError, AttributeError):
+            pass
         return cls.__new__(cls, *params)
 
 
